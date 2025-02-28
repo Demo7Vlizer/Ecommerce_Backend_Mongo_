@@ -1,6 +1,10 @@
 // import '../../models/api_response.dart';
 // ignore_for_file: unused_field
 
+import 'package:admin/models/api_response.dart';
+import 'package:admin/utility/snack_bar_helper.dart';
+import 'package:get/get_connect.dart';
+
 import '../../models/coupon.dart';
 import '../../models/my_notification.dart';
 import '../../models/order.dart';
@@ -61,78 +65,88 @@ class DataProvider extends ChangeNotifier {
   List<MyNotification> _filteredNotifications = [];
   List<MyNotification> get notifications => _filteredNotifications;
 
-  DataProvider() {}
+  DataProvider() {
+    getAllCategory();
+  }
 
+  Future<List<Category>> getAllCategory({bool showSnack = false}) async {
+    try {
+      Response response = await service.getItems(endpointUrl: 'categories');
+      if (response.isOk) {
+        ApiResponse<List<Category>> apiResponse =
+            ApiResponse<List<Category>>.fromJson(
+          response.body,
+          (json) =>
+              (json as List).map((item) => Category.fromJson(item)).toList(),
+        ); // ApiResponse.fromJson
+        _allCategories = apiResponse.data ?? [];
+        _filteredCategories =
+            List.from(_allCategories); // Initialize filtered list with all data
+        notifyListeners();
+        if (showSnack) SnackBarHelper.showSuccessSnackBar(apiResponse.message);
+      }
+    } catch (e) {
+      if (showSnack) SnackBarHelper.showErrorSnackBar(e.toString());
+      rethrow;
+    }
+    return _filteredCategories;
+  }
+
+  void filterCategories(String keyword) {
+    if (keyword.isEmpty) {
+      _filteredCategories = List.from(_allCategories);
+    } else {
+      final lowerKeyword = keyword.toLowerCase();
+      _filteredCategories = _allCategories.where((category) {
+        return (category.name ?? "").toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
+  }
 
   //TODO: should complete getAllCategory
-
 
   //TODO: should complete filterCategories
 
   //TODO: should complete getAllSubCategory
 
-
   //TODO: should complete filterSubCategories
-
 
   //TODO: should complete getAllBrands
 
-
   //TODO: should complete filterBrands
-
 
   //TODO: should complete getAllVariantType
 
-
   //TODO: should complete filterVariantTypes
-
-
 
   //TODO: should complete getAllVariant
 
-
   //TODO: should complete filterVariants
-
 
   //TODO: should complete getAllProduct
 
-
   //TODO: should complete filterProducts
-
 
   //TODO: should complete getAllCoupons
 
-
   //TODO: should complete filterCoupons
-
 
   //TODO: should complete getAllPosters
 
-
   //TODO: should complete filterPosters
-
 
   //TODO: should complete getAllNotifications
 
-
   //TODO: should complete filterNotifications
-
 
   //TODO: should complete getAllOrders
 
-
   //TODO: should complete filterOrders
-
-
-
 
   //TODO: should complete calculateOrdersWithStatus
 
-
   //TODO: should complete filterProductsByQuantity
 
-
   //TODO: should complete calculateProductWithQuantity
-
-
 }
