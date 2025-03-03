@@ -40,8 +40,10 @@ class BrandSubmitForm extends StatelessWidget {
                         return CustomDropdown(
                           initialValue: brandProvider.selectedSubCategory,
                           items: context.dataProvider.subCategories,
-                          hintText: brandProvider.selectedSubCategory?.name ?? 'Select Sub Category',
-                          displayItem: (SubCategory? subCategory) => subCategory?.name ?? '',
+                          hintText: brandProvider.selectedSubCategory?.name ??
+                              'Select Sub Category',
+                          displayItem: (SubCategory? subCategory) =>
+                              subCategory?.name ?? '',
                           onChanged: (newValue) {
                             brandProvider.selectedSubCategory = newValue;
                             brandProvider.updateUI();
@@ -93,9 +95,12 @@ class BrandSubmitForm extends StatelessWidget {
                     ),
                     onPressed: () {
                       // Validate and save the form
-                      if (context.brandProvider.addBrandFormKey.currentState!.validate()) {
-                        context.brandProvider.addBrandFormKey.currentState!.save();
+                      if (context.brandProvider.addBrandFormKey.currentState!
+                          .validate()) {
+                        context.brandProvider.addBrandFormKey.currentState!
+                            .save();
                         //TODO: should complete call submitBrand
+                        context.brandProvider.submitBrand();
                         Navigator.of(context).pop();
                       }
                     },
@@ -118,7 +123,9 @@ void showBrandForm(BuildContext context, Brand? brand) {
     builder: (BuildContext context) {
       return AlertDialog(
         backgroundColor: bgColor,
-        title: Center(child: Text('Add Brand'.toUpperCase(), style: TextStyle(color: primaryColor))),
+        title: Center(
+            child: Text('Add Brand'.toUpperCase(),
+                style: TextStyle(color: primaryColor))),
         content: BrandSubmitForm(
           brand: brand,
         ),

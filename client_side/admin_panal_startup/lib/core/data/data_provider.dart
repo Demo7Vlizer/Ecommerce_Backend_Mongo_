@@ -68,8 +68,10 @@ class DataProvider extends ChangeNotifier {
   DataProvider() {
     getAllCategory();
     getAllSubCategory();
+    getAllBrands();
   }
 
+//TODO: should complete getAllSubCategory
   Future<List<Category>> getAllCategory({bool showSnack = false}) async {
     try {
       Response response = await service.getItems(endpointUrl: 'categories');
@@ -93,6 +95,7 @@ class DataProvider extends ChangeNotifier {
     return _filteredCategories;
   }
 
+//TODO: should complete filterSubCategories
   void filterCategories(String keyword) {
     if (keyword.isEmpty) {
       _filteredCategories = List.from(_allCategories);
@@ -142,13 +145,41 @@ class DataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  //TODO: should complete getAllSubCategory
+  //TODO: should complete getAllBrands -- done..
+  Future<List<Brand>> getAllBrands({bool showSnack = false}) async {
+    try {
+      Response response = await service.getItems(endpointUrl: 'brands');
+      if (response.isOk) {
+        ApiResponse<List<Brand>> apiResponse =
+            ApiResponse<List<Brand>>.fromJson(
+          response.body,
+          (json) => (json as List).map((item) => Brand.fromJson(item)).toList(),
+        ); // ApiResponse.fromJson
+        _allBrands = apiResponse.data ?? [];
+        _filteredBrands =
+            List.from(_allBrands); // Initialize filtered list with all data
+        notifyListeners();
+        if (showSnack) SnackBarHelper.showSuccessSnackBar(apiResponse.message);
+      }
+    } catch (e) {
+      if (showSnack) SnackBarHelper.showErrorSnackBar(e.toString());
+      rethrow;
+    }
+    return _filteredBrands;
+  }
 
-  //TODO: should complete filterSubCategories
-
-  //TODO: should complete getAllBrands
-
-  //TODO: should complete filterBrands
+  //TODO: should complete filterBrands  -- done..
+  void filterBrands(String keyword) {
+    if (keyword.isEmpty) {
+      _filteredBrands = List.from(_allBrands);
+    } else {
+      final lowerKeyword = keyword.toLowerCase();
+      _filteredBrands = _allBrands.where((brand) {
+        return (brand.name ?? '').toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
+  }
 
   //TODO: should complete getAllVariantType
 
