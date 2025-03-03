@@ -33,6 +33,7 @@ class SubCategoryProvider extends ChangeNotifier {
         if (apiResponse.success == true) {
           clearFields();
           SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
+          _dataProvider.getAllSubCategory();
           log('Sub category added');
         } else {
           SnackBarHelper.showErrorSnackBar(
@@ -49,13 +50,75 @@ class SubCategoryProvider extends ChangeNotifier {
     }
   }
 
-  //TODO: should complete updateSubCategory
+  //TODO: should complete updateSubCategory  -- Done
+  Future<void> updateSubCategory() async {
+    try {
+      if (subCategoryForUpdate != null) {
+        Map<String, dynamic> subCategory = {
+          'name': subCategoryNameCtrl.text,
+          'categoryId': selectedCategory?.sId
+        };
 
-  //TODO: should complete submitSubCategory
+        final response = await service.updateItem(
+            endpointUrl: 'subCategories',
+            itemData: subCategory,
+            itemId: subCategoryForUpdate?.sId ?? '');
 
-  //TODO: should complete deleteSubCategory
+        if (response.isOk) {
+          ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+          if (apiResponse.success == true) {
+            clearFields();
+            SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
+            log('Sub Category Updated');
+            _dataProvider.getAllSubCategory();
+          } else {
+            SnackBarHelper.showErrorSnackBar(
+                'Failed to add Sub Category: ${apiResponse.message}');
+          }
+        } else {
+          SnackBarHelper.showErrorSnackBar(
+              'Error ${response.body?['message'] ?? response.statusText}');
+        }
+      }
+    } catch (e) {
+      print(e);
+      SnackBarHelper.showErrorSnackBar('An error occurred: $e');
+      rethrow;
+    }
+  }
 
-  setDataForUpdateCategory(SubCategory? subCategory) {
+  //TODO: should complete submitSubCategory -- Done
+  void submitSubCategory() {
+    if (subCategoryForUpdate != null) {
+      updateSubCategory();
+    } else {
+      addSubCategory();
+    }
+  }
+
+  //TODO: should complete deleteSubCategory -- Done 
+  Future<void> deleteSubCategory(SubCategory subCategory) async {
+    try {
+      Response response = await service.deleteItem(
+          endpointUrl: 'subCategories', itemId: subCategory.sId ?? '');
+      if (response.isOk) {
+        ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+        if (apiResponse.success == true) {
+          SnackBarHelper.showSuccessSnackBar(
+              'Sub Category Deleted Successfully');
+          _dataProvider.getAllSubCategory();
+        }
+      } else {
+        SnackBarHelper.showErrorSnackBar(
+            'Error ${response.body?['message'] ?? response.statusText}');
+      }
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  setDataForUpdateSubCategory(SubCategory? subCategory) {
     if (subCategory != null) {
       subCategoryForUpdate = subCategory;
       subCategoryNameCtrl.text = subCategory.name ?? '';

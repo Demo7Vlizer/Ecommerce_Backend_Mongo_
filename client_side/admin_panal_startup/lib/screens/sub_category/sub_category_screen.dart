@@ -1,3 +1,4 @@
+import 'package:admin/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import '../../utility/constants.dart';
@@ -5,11 +6,10 @@ import 'components/add_sub_category_form.dart';
 import 'components/sub_category_header.dart';
 import 'components/sub_category_list_section.dart';
 
-
 class SubCategoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
+    return SafeArea(
       child: SingleChildScrollView(
         primary: false,
         padding: EdgeInsets.all(defaultPadding),
@@ -30,22 +30,18 @@ class SubCategoryScreen extends StatelessWidget {
                           Expanded(
                             child: Text(
                               "My Sub Categories",
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .titleMedium,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
                           ElevatedButton.icon(
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.symmetric(
                                 horizontal: defaultPadding * 1.5,
-                                vertical:
-                                defaultPadding,
+                                vertical: defaultPadding,
                               ),
                             ),
                             onPressed: () {
-                              showAddSubCategoryForm(context,null);
+                              showAddSubCategoryForm(context, null);
                             },
                             icon: Icon(Icons.add),
                             label: Text("Add New"),
@@ -54,6 +50,8 @@ class SubCategoryScreen extends StatelessWidget {
                           IconButton(
                               onPressed: () {
                                 //TODO: should complete call getAllSubCategory
+                                context.dataProvider
+                                    .getAllSubCategory(showSnack: true);
                               },
                               icon: Icon(Icons.refresh)),
                         ],
