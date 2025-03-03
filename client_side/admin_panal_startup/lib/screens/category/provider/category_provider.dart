@@ -25,6 +25,7 @@ class CategoryProvider extends ChangeNotifier {
 
   CategoryProvider(this._dataProvider);
 
+//TODO: should complete addCategory
   addCategory() async {
     try {
       if (selectedImage == null) {
@@ -71,6 +72,7 @@ class CategoryProvider extends ChangeNotifier {
     }
   }
 
+//TODO: should complete updateCategory
   updateCategory() async {
     try {
       Map<String, dynamic> formDataMap = {
@@ -107,6 +109,7 @@ class CategoryProvider extends ChangeNotifier {
     }
   }
 
+  //TODO: should complete submitCategory
   submitCategory() {
     if (categoryForUpdate != null) {
       updateCategory();
@@ -115,11 +118,33 @@ class CategoryProvider extends ChangeNotifier {
     }
   }
 
-  //TODO: should complete addCategory
 
-  //TODO: should complete updateCategory
+// delete category
+deleteCategory(Category category) async {
+  try {
+    Response response = await service.deleteItem(endpointUrl: 'categories', itemId: category.sId ?? '');
+    if (response.isOk) {
+      ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+      if (apiResponse.success == true) {
+        SnackBarHelper.showSuccessSnackBar('Category Deleted Successfully');
+        _dataProvider.getAllCategory();
+      } else {
+        SnackBarHelper.showErrorSnackBar('Error ${response.body?['message'] ?? response.statusText}');
+      }
+    } else {
+      SnackBarHelper.showErrorSnackBar('Error ${response.body?['message'] ?? response.statusText}');
+    }
+  } catch (e) {
+    print(e);
+    rethrow;
+  }
+}
 
-  //TODO: should complete submitCategory
+  
+
+  
+
+
 
   void pickImage() async {
     final ImagePicker picker = ImagePicker();
