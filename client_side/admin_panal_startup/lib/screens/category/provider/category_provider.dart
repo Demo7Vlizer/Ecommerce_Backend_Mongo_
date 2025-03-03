@@ -108,12 +108,12 @@ class CategoryProvider extends ChangeNotifier {
   }
 
   submitCategory() {
-  if (categoryForUpdate != null) {
-    updateCategory();
-  } else {
-    addCategory();
+    if (categoryForUpdate != null) {
+      updateCategory();
+    } else {
+      addCategory();
+    }
   }
-}
 
   //TODO: should complete addCategory
 
