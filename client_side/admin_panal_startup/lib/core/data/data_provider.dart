@@ -69,6 +69,7 @@ class DataProvider extends ChangeNotifier {
     getAllCategory();
     getAllSubCategory();
     getAllBrands();
+    getAllVariantType();
   }
 
 //TODO: should complete getAllSubCategory
@@ -182,8 +183,44 @@ class DataProvider extends ChangeNotifier {
   }
 
   //TODO: should complete getAllVariantType
+  Future<List<VariantType>> getAllVariantType({bool showSnack = false}) async {
+    try {
+      Response response = await service.getItems(endpointUrl: 'variantTypes');
+      if (response.isOk) {
+        ApiResponse<List<VariantType>> apiResponse =
+            ApiResponse<List<VariantType>>.fromJson(
+          response.body,
+          (json) =>
+              (json as List).map((item) => VariantType.fromJson(item)).toList(),
+        ); // ApiResponse.fromJson
+
+        _allVariantTypes = apiResponse.data ?? [];
+        _filteredVariantTypes = List.from(
+            _allVariantTypes); // Initialize filtered list with all data
+        notifyListeners();
+
+        if (showSnack) SnackBarHelper.showSuccessSnackBar(apiResponse.message);
+        return _filteredVariantTypes;
+      }
+    } catch (e) {
+      if (showSnack) SnackBarHelper.showErrorSnackBar(e.toString());
+      rethrow;
+    }
+    return _filteredVariantTypes;
+  }
 
   //TODO: should complete filterVariantTypes
+  void filterVariantTypes(String keyword) {
+    if (keyword.isEmpty) {
+      _filteredVariantTypes = List.from(_allVariantTypes);
+    } else {
+      final lowerKeyword = keyword.toLowerCase();
+      _filteredVariantTypes = _allVariantTypes.where((variantType) {
+        return (variantType.name ?? '').toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
+  }
 
   //TODO: should complete getAllVariant
 
