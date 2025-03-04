@@ -1,3 +1,5 @@
+import 'package:admin/utility/extensions.dart';
+
 import '../../../core/data/data_provider.dart';
 import '../../../models/variant.dart';
 import 'add_variant_form.dart';
@@ -6,8 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../utility/color_list.dart';
 import '../../../utility/constants.dart';
-// import '../../../models/variant_type.dart';   
-
+// import '../../../models/variant_type.dart';
 
 class VariantsListSection extends StatelessWidget {
   const VariantsListSection({
@@ -27,10 +28,7 @@ class VariantsListSection extends StatelessWidget {
         children: [
           Text(
             "All Variants",
-            style: Theme
-                .of(context)
-                .textTheme
-                .titleMedium,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           SizedBox(
             width: double.infinity,
@@ -58,12 +56,14 @@ class VariantsListSection extends StatelessWidget {
                   ],
                   rows: List.generate(
                     dataProvider.variants.length,
-                        (index) =>
-                        variantDataRow(dataProvider.variants[index], index + 1, edit: () {
-                          showAddVariantForm(context, dataProvider.variants[index]);
-                        }, delete: () {
-                          //TODO: should complete call deleteVariant
-                        }),
+                    (index) => variantDataRow(
+                        dataProvider.variants[index], index + 1, edit: () {
+                      showAddVariantForm(context, dataProvider.variants[index]);
+                    }, delete: () {
+                      //TODO: should complete call deleteVariant
+                      context.variantProvider
+                          .deleteVariant(dataProvider.variants[index]);
+                    }),
                   ),
                 );
               },
@@ -75,7 +75,8 @@ class VariantsListSection extends StatelessWidget {
   }
 }
 
-DataRow variantDataRow(Variant VariantInfo, int index, {Function? edit, Function? delete}) {
+DataRow variantDataRow(Variant VariantInfo, int index,
+    {Function? edit, Function? delete}) {
   return DataRow(
     cells: [
       DataCell(

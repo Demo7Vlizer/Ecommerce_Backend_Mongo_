@@ -1,5 +1,4 @@
-import 'dart:math';
-
+// import 'dart:math';
 import 'package:admin/models/api_response.dart';
 import 'package:admin/utility/snack_bar_helper.dart';
 
@@ -37,8 +36,8 @@ class VariantsProvider extends ChangeNotifier {
         if (apiResponse.success == true) {
           clearFields();
           SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
-          log('Variant added' as num);
-          _dataProvider.getAllVariant();
+          await _dataProvider.getAllVariant(showSnack: false);
+          notifyListeners();
         } else {
           SnackBarHelper.showErrorSnackBar(
               'Failed to add Variant: ${apiResponse.message}');
@@ -73,11 +72,11 @@ class VariantsProvider extends ChangeNotifier {
           if (apiResponse.success == true) {
             clearFields();
             SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
-            log('Variant Updated' as num);
-            _dataProvider.getAllVariant();
+            await _dataProvider.getAllVariant(showSnack: false);
+            notifyListeners();
           } else {
             SnackBarHelper.showErrorSnackBar(
-                'Failed to add Variant: ${apiResponse.message}');
+                'Failed to update Variant: ${apiResponse.message}');
           }
         } else {
           SnackBarHelper.showErrorSnackBar(
@@ -110,7 +109,8 @@ class VariantsProvider extends ChangeNotifier {
         ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
         if (apiResponse.success == true) {
           SnackBarHelper.showSuccessSnackBar('Variant Deleted Successfully');
-          _dataProvider.getAllVariant();
+          await _dataProvider.getAllVariant(showSnack: false);
+          notifyListeners();
         }
       } else {
         SnackBarHelper.showErrorSnackBar(
