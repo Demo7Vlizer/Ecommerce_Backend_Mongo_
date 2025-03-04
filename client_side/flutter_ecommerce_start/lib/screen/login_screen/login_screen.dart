@@ -16,25 +16,19 @@ class LoginScreen extends StatelessWidget {
       loginAfterSignUp: false,
       logo: const AssetImage('assets/images/logo.png'),
       // ignore: body_might_complete_normally_nullable
-      onLogin: (loginData) {
-        //TODO: should complete call login
+      onLogin: (loginData) async {
+        final result = await context.userProvider.login(loginData);
+        return result; // Will return null on success or error message on failure
       },
       // ignore: body_might_complete_normally_nullable
-      onSignup: (SignupData data) {
-        //TODO: should complete call register
+      onSignup: (data) async {
+        final result = await context.userProvider.register(data);
+        return result; // Will return null on success or error message on failure
       },
       onSubmitAnimationCompleted: () {
-        if(context.userProvider.getLoginUsr()?.sId != null){
+        if (context.userProvider.getLoginUsr()?.sId != null) {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) {
-              return const HomeScreen();
-            },
-          ));
-        }else{
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) {
-              return const LoginScreen();
-            },
+            builder: (context) => const HomeScreen(),
           ));
         }
       },
@@ -46,7 +40,8 @@ class LoginScreen extends StatelessWidget {
           buttonTheme: const LoginButtonTheme(
             backgroundColor: AppColor.darkOrange,
           ),
-          cardTheme: const CardTheme(color: Colors.white, surfaceTintColor: Colors.white),
+          cardTheme: const CardTheme(
+              color: Colors.white, surfaceTintColor: Colors.white),
           titleStyle: const TextStyle(color: Colors.black)),
     );
   }
