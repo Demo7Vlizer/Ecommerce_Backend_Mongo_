@@ -15,15 +15,19 @@ class ProductGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final crossAxisCount = screenWidth > 600 ? 3 : 2;
+    final childAspectRatio = screenWidth > 600 ? 0.8 : 10 / 16;
+
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: GridView.builder(
         itemCount: items.length,
         shrinkWrap: true,
         physics: const ScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio: 10 / 16,
-          crossAxisCount: 2,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          childAspectRatio: childAspectRatio,
+          crossAxisCount: crossAxisCount,
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
         ),

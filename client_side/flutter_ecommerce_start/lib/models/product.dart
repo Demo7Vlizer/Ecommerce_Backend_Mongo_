@@ -17,20 +17,20 @@ class Product {
 
   Product(
       {this.sId,
-        this.name,
-        this.description,
-        this.quantity,
-        this.price,
-        this.offerPrice,
-        this.proCategoryId,
-        this.proSubCategoryId,
-        this.proBrandId,
-        this.proVariantTypeId,
-        this.proVariantId,
-        this.images,
-        this.createdAt,
-        this.updatedAt,
-        this.iV});
+      this.name,
+      this.description,
+      this.quantity,
+      this.price,
+      this.offerPrice,
+      this.proCategoryId,
+      this.proSubCategoryId,
+      this.proBrandId,
+      this.proVariantTypeId,
+      this.proVariantId,
+      this.images,
+      this.createdAt,
+      this.updatedAt,
+      this.iV});
 
   Product.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -38,7 +38,8 @@ class Product {
     description = json['description'];
     quantity = json['quantity'];
     price = json['price']?.toDouble();
-    offerPrice = json['offerPrice']?.toDouble();;
+    offerPrice = json['offerPrice']?.toDouble();
+    ;
     proCategoryId = json['proCategoryId'] != null
         ? new ProRef.fromJson(json['proCategoryId'])
         : null;
@@ -141,7 +142,7 @@ class Images {
 
   Images.fromJson(Map<String, dynamic> json) {
     image = json['image'];
-    url = json['url'];
+    url = (json['url'] as String?)?.replaceAll('localhost', '10.0.2.2');     //-- Changes Made 
     sId = json['_id'];
   }
 

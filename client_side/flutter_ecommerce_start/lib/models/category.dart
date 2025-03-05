@@ -18,7 +18,7 @@ class Category {
   Category.fromJson(Map<String, dynamic> json)
       : sId = json['_id'],
         name = json['name'],
-        image = json['image'],
+        image = (json['image'] as String?)?.replaceAll('localhost', '10.0.2.2'),   //-- Changes Made 
         createdAt = json['createdAt'],
         updatedAt = json['updatedAt'],
         isSelected = false;

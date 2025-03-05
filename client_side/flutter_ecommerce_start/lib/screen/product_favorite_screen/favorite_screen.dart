@@ -13,6 +13,7 @@ class FavoriteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero, () {
       //TODO: should complete call loadFavoriteItems
+      
     });
     return Scaffold(
       appBar: AppBar(

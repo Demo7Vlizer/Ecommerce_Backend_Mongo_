@@ -1,10 +1,10 @@
+import 'package:e_commerce_flutter/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../models/user.dart';
 import '../../../utility/constants.dart';
 import '../../../widget/app_bar_action_button.dart';
 import '../../../widget/custom_search_bar.dart';
-
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -24,7 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               icon: Icons.menu,
               onPressed: () {
                 final box = GetStorage();
-                Map<String,dynamic>? userJson = box.read(USER_INFO_BOX);
+                Map<String, dynamic>? userJson = box.read(USER_INFO_BOX);
                 // ignore: unused_local_variable
                 User? userLogged = User.fromJson(userJson ?? {});
                 Scaffold.of(context).openDrawer();
@@ -35,6 +35,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 controller: TextEditingController(),
                 onChanged: (val) {
                   //TODO: should complete call filterProducts
+                  context.dataProvider.filterProducts(val);
                 },
               ),
             ),

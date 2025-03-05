@@ -6,7 +6,6 @@ import '../../../models/category.dart';
 class CategorySelector extends StatelessWidget {
   final List<Category> categories;
 
-
   const CategorySelector({
     super.key,
     required this.categories,
@@ -14,24 +13,31 @@ class CategorySelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final itemWidth = screenWidth > 600 ? 100.0 : 80.0;
+    final fontSize = screenWidth > 600 ? 14.0 : 12.0;
+
     return SizedBox(
-      height: 60,
+      height: screenWidth > 600 ? 80 : 60,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
         itemBuilder: (context, index) {
           final category = categories[index];
           return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 6,vertical: 1),
+            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
             child: OpenContainerWrapper(
-              nextScreen: ProductByCategoryScreen(selectedCategory: categories[index]),
+              nextScreen:
+                  ProductByCategoryScreen(selectedCategory: categories[index]),
               child: Container(
-                width: 80,
-                height: 80,
+                width: itemWidth,
+                height: itemWidth,
                 margin: const EdgeInsets.symmetric(horizontal: 8),
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
-                  color: category.isSelected ? const Color(0xFFf16b26) : const Color(0xFFE5E6E8),
+                  color: category.isSelected
+                      ? const Color(0xFFf16b26)
+                      : const Color(0xFFE5E6E8),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 alignment: Alignment.center,
@@ -41,8 +47,8 @@ class CategorySelector extends StatelessWidget {
                     Expanded(
                       child: Image.network(
                         category.image ?? '',
-                        width: 90,
-                        height: 90,
+                        width: itemWidth * 0.8,
+                        height: itemWidth * 0.8,
                         fit: BoxFit.contain,
                         errorBuilder: (context, error, stackTrace) {
                           return const Icon(Icons.error, color: Colors.grey);
@@ -53,8 +59,9 @@ class CategorySelector extends StatelessWidget {
                     Text(
                       category.name ?? '',
                       style: TextStyle(
-                        color: category.isSelected ? Colors.white : Colors.black,
-                        fontSize: 12,
+                        color:
+                            category.isSelected ? Colors.white : Colors.black,
+                        fontSize: fontSize,
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),

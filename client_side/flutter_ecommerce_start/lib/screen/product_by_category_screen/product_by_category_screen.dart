@@ -1,3 +1,5 @@
+import 'package:e_commerce_flutter/utility/extensions.dart';
+
 import '../../models/brand.dart';
 import '../../models/category.dart';
 import '../../models/sub_category.dart';
@@ -19,6 +21,7 @@ class ProductByCategoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero, () {
       //TODO: should complete call filterInitialProductAndSubCategory
+      context.proByCProvider.filterInitialProductAndSubCategory(selectedCategory);
     });
     return Scaffold(
       body: SafeArea(
@@ -54,6 +57,7 @@ class ProductByCategoryScreen extends StatelessWidget {
                                     onSelect: (val) {
                                       if (val != null) {
                                         //TODO: should complete call filterProductBySubCategory
+                                        context.proByCProvider.filterProductBySubCategory(val);
                                       }
                                     },
                                   ),
@@ -68,9 +72,11 @@ class ProductByCategoryScreen extends StatelessWidget {
                                     items: const ['Low To High', 'High To Low'],
                                     onChanged: (val) {
                                       if (val?.toLowerCase() == 'low to high') {
-                                        //TODO: should complete call sortProducts (ascending: true)
+                                        //Done: should complete call sortProducts (ascending: true)
+                                        context.proByCProvider.sortProducts(ascending: true);
                                       } else {
-                                        //TODO: should complete call sortProducts (ascending: false)
+                                        //Done: should complete call sortProducts (ascending: false)
+                                        context.proByCProvider.sortProducts(ascending: false);
                                       }
                                     },
                                     displayItem: (val) => val,
@@ -85,6 +91,7 @@ class ProductByCategoryScreen extends StatelessWidget {
                                         onSelectionChanged: (val) {
                                           proByCatProvider.selectedBrands = val;
                                           //TODO: should complete call filterProductByBrand
+                                          context.proByCProvider.filterProductByBrand();
                                           proByCatProvider.updateUI();
                                         },
                                         displayItem: (val) => val.name ?? '',

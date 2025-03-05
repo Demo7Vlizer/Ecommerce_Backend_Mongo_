@@ -8,17 +8,18 @@ class Poster {
 
   Poster(
       {this.sId,
-        this.posterName,
-        this.imageUrl,
-        this.createdAt,
-        this.updatedAt,
-        this.iV});
+      this.posterName,
+      this.imageUrl,
+      this.createdAt,
+      this.updatedAt,
+      this.iV});
 
   Poster.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     posterName = json['posterName'];
-    imageUrl = json['imageUrl'];
-    createdAt = json['createdAt'];
+    imageUrl =
+        (json['imageUrl'] as String?)?.replaceAll('localhost', '10.0.2.2');   //-- Changes Made 
+    createdAt = json['createdAt']; 
     updatedAt = json['updatedAt'];
     iV = json['__v'];
   }
