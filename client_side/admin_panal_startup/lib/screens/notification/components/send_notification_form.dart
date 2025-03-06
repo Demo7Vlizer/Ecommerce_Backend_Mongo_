@@ -78,6 +78,7 @@ class SendNotificationForm extends StatelessWidget {
                       if (context.notificationProvider.sendNotificationFormKey.currentState!.validate()) {
                         context.notificationProvider.sendNotificationFormKey.currentState!.save();
                         //TODO: should complete call sendNotification
+                        context.notificationProvider.sendNotification();
                         Navigator.of(context).pop();
                       }
                     },

@@ -142,7 +142,8 @@ void showCustomBottomSheet(BuildContext context) {
                       ),
                     ),
                     ApplyCouponButton(onPressed: () {
-                      //TODO: should complete call checkCoupon
+                      //Done: should complete call checkCoupon
+                      context.cartProvider.checkCoupon();
                     })
                   ],
                 ),
@@ -160,12 +161,12 @@ void showCustomBottomSheet(BuildContext context) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Total Amount             : \$${100}', //TODO: should complete to CartSubTotal
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
+                          Text('Total Amount             : \$${context.cartProvider.getCartSubTotal()}', //TODO: should complete to CartSubTotal
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
                           Text('Total Offer Applied  : \$${cartProvider.couponCodeDiscount}',
                               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
-                          const Text('Grand Total            : \$${100}', //TODO: should complete to GrandTotal
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue)),
+                          Text('Grand Total            : \$${context.cartProvider.getGrandTotal()}', //TODO: should complete to GrandTotal
+                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue)),
                         ],
                       );
                     },
@@ -176,8 +177,8 @@ void showCustomBottomSheet(BuildContext context) {
                 Consumer<CartProvider>(
                   builder: (context, cartProvider, child) {
                     return CompleteOrderButton(
-                        labelText: 'Complete Order  \$${100} ', //TODO: should complete to GrandTotal
-                        onPressed: () {
+                        labelText: 'Complete Order  \$${context.cartProvider.getGrandTotal()} ', //Done: should complete to GrandTotal
+                        onPressed: () { 
                           if (!cartProvider.isExpanded) {
                             cartProvider.isExpanded = true;
                             cartProvider.updateUI();
@@ -186,7 +187,8 @@ void showCustomBottomSheet(BuildContext context) {
                           // Check if the form is valid
                           if (context.cartProvider.buyNowFormKey.currentState!.validate()) {
                             context.cartProvider.buyNowFormKey.currentState!.save();
-                            //TODO: should complete call submitOrder
+                            //Done: should complete call submitOrder
+                            context.cartProvider.submitOrder(context);
                             return;
                           }
                         });

@@ -22,9 +22,26 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
   var cart = FlutterCart();
-  //TODO: should complete add one signal app id
-  OneSignal.initialize("YOUR_ONE_SIGNAL_APP_ID");
-  OneSignal.Notifications.requestPermission(true);
+
+  // Initialize OneSignal with enhanced debugging
+  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+
+  // Initialize OneSignal
+  OneSignal.initialize("f3a42379-5dbe-45c6-9d8b-3e996e12e153");
+
+  // Enable notification handling
+  OneSignal.Notifications.clearAll();
+  await OneSignal.Notifications.requestPermission(true);
+
+  // Enable subscription
+  await OneSignal.User.pushSubscription.optIn();
+
+  // Add subscription observer to check registration status
+  OneSignal.User.pushSubscription.addObserver((state) {
+    print('SUBSCRIPTION STATE CHANGED:');
+    print('Subscription State: $state');
+  });
+
   await cart.initializeCart(isPersistenceSupportEnabled: true);
 
   runApp(

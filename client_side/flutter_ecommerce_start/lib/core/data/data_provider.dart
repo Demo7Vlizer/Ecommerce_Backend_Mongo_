@@ -59,6 +59,7 @@ class DataProvider extends ChangeNotifier {
   List<Order> get orders => _filteredOrders;
 
   DataProvider() {
+    getAllOrders();
     print('=== DataProvider Initialization ===');
     print('1. Starting data provider initialization...');
     getAllProduct().then((_) {
@@ -286,6 +287,29 @@ class DataProvider extends ChangeNotifier {
   //TODO: should complete getAllPosters
 
   //TODO: should complete getAllOrderByUser
+   Future<List<Order>> getAllOrders({bool showSnack = false}) async {
+    try {
+      Response response = await service.getItems(endpointUrl: 'orders');
+      if (response.isOk) {
+        ApiResponse<List<Order>> apiResponse =
+            ApiResponse<List<Order>>.fromJson(
+          response.body,
+          (json) => (json as List).map((item) => Order.fromJson(item)).toList(),
+        ); // ApiResponse.fromJson
+
+        print(apiResponse.message);
+        _allOrders = apiResponse.data ?? [];
+        _filteredOrders = List.from(_allOrders);
+        notifyListeners();
+
+        if (showSnack) SnackBarHelper.showSuccessSnackBar(apiResponse.message);
+      }
+    } catch (e) {
+      if (showSnack) SnackBarHelper.showErrorSnackBar(e.toString());
+      rethrow;
+    }
+    return _filteredOrders;
+  }
 
   double calculateDiscountPercentage(num originalPrice, num? discountedPrice) {
     if (originalPrice <= 0) {

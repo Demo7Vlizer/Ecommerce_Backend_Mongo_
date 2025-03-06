@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SnackBarHelper {
-  static void showErrorSnackBar(String message,{String title = "Error"}) {
+  static void showErrorSnackBar(String message, {String title = "Error"}) {
     Get.snackbar(
       title,
       message,
@@ -14,7 +14,7 @@ class SnackBarHelper {
     );
   }
 
-  static void showSuccessSnackBar(String message,{String title = "Success"}) {
+  static void showSuccessSnackBar(String message, {String title = "Success"}) {
     Get.snackbar(
       title,
       message,
