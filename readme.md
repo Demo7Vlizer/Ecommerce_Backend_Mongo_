@@ -233,5 +233,5 @@ flutter run
   <p align="center">
     <img src="samples/Screenshot 2025-03-06 111106.png" width="250" alt="Platform Overview"/>
     <img src="samples/Screenshot 2025-03-06 111122.png" width="272" alt="Platform Overview"/>
-    <img src="samples/Screenshot 2025-03-06 111141.png" width="250" alt="Platform Overview"/>
+    <img src="samples/Screenshot 2025-03-06 111141.png" width="239" alt="Platform Overview"/>
   </p>
